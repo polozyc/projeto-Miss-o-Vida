@@ -13,15 +13,20 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Prefixo do site (ex: "/nome-do-repo" no GitHub Pages, ou "" em Docker/local)
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 // Redireciona para o login caso o token expire/seja inválido
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && window.location.pathname.startsWith("/admin")) {
+    const caminhoAdmin = `${base}/admin`;
+    const caminhoLogin = `${base}/admin/login`;
+    if (error.response?.status === 401 && window.location.pathname.startsWith(caminhoAdmin)) {
       localStorage.removeItem("missaovida_token");
       localStorage.removeItem("missaovida_admin");
-      if (window.location.pathname !== "/admin/login") {
-        window.location.href = "/admin/login";
+      if (window.location.pathname !== caminhoLogin) {
+        window.location.href = caminhoLogin;
       }
     }
     return Promise.reject(error);
