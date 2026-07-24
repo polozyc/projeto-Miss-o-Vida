@@ -15,6 +15,13 @@ export default function NaoEncontrada() {
       <Button to="/" variant="secondary" className="mt-8">
         Voltar para a página inicial
       </Button>
+
+      {/* DIAGNÓSTICO TEMPORÁRIO - remover depois de resolver o roteamento */}
+      <div className="mt-10 rounded-xl bg-black/5 p-4 text-left text-xs font-mono text-ink/70 max-w-lg break-all">
+        <p><strong>BASE_URL:</strong> {String(import.meta.env.BASE_URL)}</p>
+        <p><strong>window.location.pathname:</strong> {window.location.pathname}</p>
+        <p><strong>window.location.href:</strong> {window.location.href}</p>
+      </div>
     </div>
   );
 }
