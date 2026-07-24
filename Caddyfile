@@ -1,0 +1,12 @@
+# Caddyfile - proxy reverso com HTTPS automático (Let's Encrypt)
+#
+# Troque os domínios abaixo pelos seus domínios reais, já apontando
+# via DNS (registro A) para o IP do servidor antes de subir o Caddy.
+
+seudominio.org.br {
+    reverse_proxy frontend:80
+}
+
+api.seudominio.org.br {
+    reverse_proxy backend:4000
+}

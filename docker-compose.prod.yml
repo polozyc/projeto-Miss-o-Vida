@@ -1,0 +1,97 @@
+version: "3.9"
+
+# Compose de PRODUÇÃO.
+# Uso: docker-compose -f docker-compose.prod.yml up -d --build
+#
+# Diferenças em relação ao docker-compose.yml de desenvolvimento:
+# - Porta do Postgres NÃO é exposta ao host (só acessível pela rede interna)
+# - Frontend não expõe porta diretamente: o Caddy é quem recebe tráfego 80/443
+# - Todas as variáveis sensíveis vêm obrigatoriamente do arquivo .env (sem defaults)
+# - Caddy cuida do HTTPS automático (Let's Encrypt) e do proxy reverso
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: missaovida_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/1-init.sql
+      - ./backend/db/seed.sql:/docker-entrypoint-initdb.d/2-seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - missaovida_net
+    # Nenhuma porta publicada: só o backend, na mesma rede, acessa o banco.
+
+  backend:
+    build:
+      context: ./backend
+    container_name: missaovida_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 4000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET}
+      CORS_ORIGIN: ${SITE_URL}
+      ADMIN_DEFAULT_NAME: ${ADMIN_DEFAULT_NAME}
+      ADMIN_DEFAULT_EMAIL: ${ADMIN_DEFAULT_EMAIL}
+      ADMIN_DEFAULT_PASSWORD: ${ADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - backend_uploads:/app/uploads
+    networks:
+      - missaovida_net
+    # Sem "ports": o Caddy fala com o backend pelo nome do serviço, dentro da rede.
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ${API_URL}
+    container_name: missaovida_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - missaovida_net
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: missaovida_caddy
+    restart: unless-stopped
+    depends_on:
+      - frontend
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - missaovida_net
+
+networks:
+  missaovida_net:
+    driver: bridge
+
+volumes:
+  db_data:
+  backend_uploads:
+  caddy_data:
+  caddy_config:

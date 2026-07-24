@@ -1,0 +1,17 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Ambiente
+.env
+backend/.env
+frontend/.env
+
+# Build
+frontend/dist/
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Sistema
+.DS_Store
+*.log
