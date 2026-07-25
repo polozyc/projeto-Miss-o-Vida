@@ -41,6 +41,22 @@ INSERT INTO galeria (titulo, imagem_url, categoria, criado_em) VALUES
 ('Time infantil da Missão Vida', 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=900&q=80', 'esporte', NOW() - INTERVAL '3 days'),
 ('Voluntários reunidos no salão comunitário', 'https://images.unsplash.com/photo-1593113630400-ea4288922497?w=900&q=80', 'geral', NOW() - INTERVAL '1 days');
 
+INSERT INTO projetos (categoria, titulo, descricao, tag, imagem_url, ordem) VALUES
+-- Esporte
+('esporte', 'Futebol de Base', 'Treinos semanais aos sábados, com foco em fundamentos, trabalho em equipe e valores esportivos.', '6 a 12 anos', 'https://placehold.co/700x500/1B4332/FBF7EF?font=roboto&text=Futebol+de+Base', 1),
+('esporte', 'Vôlei Comunitário', 'Oficinas de vôlei que aliam atividade física a rodas de conversa sobre saúde e cidadania.', '13 a 17 anos', 'https://placehold.co/700x500/1B4332/FBF7EF?font=roboto&text=V%C3%B4lei+Comunit%C3%A1rio', 2),
+('esporte', 'Capoeira e Cultura', 'Aulas de capoeira que resgatam a cultura afro-brasileira e fortalecem a autoestima dos participantes.', 'Todas as idades', 'https://placehold.co/700x500/1B4332/FBF7EF?font=roboto&text=Capoeira+e+Cultura', 3),
+-- Educação
+('educacao', 'Reforço Escolar', 'Apoio pedagógico gratuito para estudantes da rede pública com dificuldades de aprendizagem.', 'Educação', 'https://placehold.co/700x500/2D6A4F/FBF7EF?font=roboto&text=Reforço+Escolar', 1),
+-- Social
+('social', 'Cesta Solidária', 'Distribuição mensal de cestas básicas para famílias cadastradas em situação de vulnerabilidade.', 'Mensal', 'https://placehold.co/700x500/D68C1F/FBF7EF?font=roboto&text=Cesta+Solidária', 1),
+('social', 'Campanha do Agasalho', 'Arrecadação e distribuição de roupas e cobertores durante os meses mais frios do ano.', 'Sazonal', 'https://placehold.co/700x500/D68C1F/FBF7EF?font=roboto&text=Campanha+do+Agasalho', 2),
+('social', 'Mutirão de Cidadania', 'Emissão de documentos, orientação jurídica e serviços básicos de saúde para a comunidade.', 'Bimestral', 'https://placehold.co/700x500/D68C1F/FBF7EF?font=roboto&text=Mutirão+de+Cidadania', 3),
+-- Evento
+('evento', 'Festa das Crianças', 'Celebração especial no Dia das Crianças com brincadeiras, lanches e presentes para os pequenos.', 'Anual', 'https://placehold.co/700x500/C94530/FBF7EF?font=roboto&text=Festa+das+Crianças', 1),
+('evento', 'Encontro de Famílias', 'Tarde de integração entre voluntários, famílias atendidas e parceiros da comunidade.', 'Semestral', 'https://placehold.co/700x500/C94530/FBF7EF?font=roboto&text=Encontro+de+Famílias', 2),
+('evento', 'Confraternização de Fim de Ano', 'Celebração de encerramento das atividades do ano, com apresentações dos participantes dos projetos.', 'Anual', 'https://placehold.co/700x500/C94530/FBF7EF?font=roboto&text=Confraternização', 3);
+
 INSERT INTO mensagens (nome, email, telefone, assunto, mensagem, lida, criado_em) VALUES
 ('Fernanda Alves', 'fernanda.alves@example.com', '(11) 98888-1122', 'contato', 'Olá, gostaria de saber como posso ser voluntária nas oficinas esportivas aos finais de semana.', FALSE, NOW() - INTERVAL '2 days'),
 ('Ricardo Souza', 'ricardo.souza@example.com', '(11) 97777-3344', 'doacao', 'Bom dia! Represento uma pequena empresa local e gostaríamos de fazer uma doação mensal recorrente. Podem entrar em contato?', FALSE, NOW() - INTERVAL '1 days'),

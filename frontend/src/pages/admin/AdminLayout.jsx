@@ -1,12 +1,13 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard, Image, Newspaper, MessageSquare, LogOut, HeartHandshake
+  LayoutDashboard, Image, Newspaper, MessageSquare, LogOut, HeartHandshake, FolderKanban
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 const links = [
   { to: "/admin", label: "Visão geral", icon: LayoutDashboard, end: true },
+  { to: "/admin/projetos", label: "Projetos", icon: FolderKanban },
   { to: "/admin/galeria", label: "Galeria", icon: Image },
   { to: "/admin/noticias", label: "Notícias", icon: Newspaper },
   { to: "/admin/mensagens", label: "Mensagens", icon: MessageSquare }

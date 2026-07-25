@@ -10,15 +10,33 @@ import ProjectCard from "../components/ProjectCard";
 import WaveDivider from "../components/WaveDivider";
 import api from "../api/api";
 
+const ICONE_POR_CATEGORIA = {
+  esporte: { icon: Trophy, tag: "Esporte" },
+  educacao: { icon: GraduationCap, tag: "Educação" },
+  social: { icon: HandHeart, tag: "Solidariedade" },
+  evento: { icon: CalendarHeart, tag: "Comunidade" }
+};
+
 export default function Home() {
   const [galeria, setGaleria] = useState([]);
   const [noticias, setNoticias] = useState([]);
+  const [projetos, setProjetos] = useState([]);
   const [erroApi, setErroApi] = useState(false);
 
   useEffect(() => {
     api.get("/galeria").then((res) => setGaleria(res.data.slice(0, 8))).catch(() => setErroApi(true));
     api.get("/noticias").then((res) => setNoticias(res.data.slice(0, 3))).catch(() => setErroApi(true));
+    api.get("/projetos").then((res) => setProjetos(res.data)).catch(() => setErroApi(true));
   }, []);
+
+  // Pega o primeiro projeto cadastrado de cada categoria, pra mostrar um "resumo"
+  // de 4 cards na Home (a lista completa fica na página Projetos).
+  const destaquesProjetos = Object.entries(ICONE_POR_CATEGORIA)
+    .map(([categoria, { icon, tag }]) => {
+      const item = projetos.find((p) => p.categoria === categoria);
+      return item ? { item, icon, tag } : null;
+    })
+    .filter(Boolean);
 
   return (
     <div>
@@ -119,34 +137,16 @@ export default function Home() {
             </h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <ProjectCard
-              icon={Trophy}
-              tag="Esporte"
-              titulo="Área Esportiva"
-              descricao="Futebol, vôlei e capoeira para crianças e adolescentes, unindo disciplina e diversão."
-              imagem="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&q=80"
-            />
-            <ProjectCard
-              icon={GraduationCap}
-              tag="Educação"
-              titulo="Reforço Escolar"
-              descricao="Apoio pedagógico gratuito para estudantes da rede pública com dificuldades de aprendizagem."
-              imagem="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80"
-            />
-            <ProjectCard
-              icon={HandHeart}
-              tag="Solidariedade"
-              titulo="Ações Beneficentes"
-              descricao="Campanhas de arrecadação de alimentos, roupas e itens de higiene para famílias carentes."
-              imagem="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&q=80"
-            />
-            <ProjectCard
-              icon={CalendarHeart}
-              tag="Comunidade"
-              titulo="Eventos Comunitários"
-              descricao="Encontros, mutirões e celebrações que fortalecem os laços entre os moradores do bairro."
-              imagem="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&q=80"
-            />
+            {destaquesProjetos.map(({ item, icon, tag }) => (
+              <ProjectCard
+                key={item.id}
+                icon={icon}
+                tag={tag}
+                titulo={item.titulo}
+                descricao={item.descricao}
+                imagem={item.imagem_url}
+              />
+            ))}
           </div>
           <div className="text-center mt-10">
             <Button to="/projetos" variant="secondary">

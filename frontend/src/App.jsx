@@ -14,6 +14,7 @@ import NaoEncontrada from "./pages/NaoEncontrada";
 
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProjetos from "./pages/admin/AdminProjetos";
 import AdminGaleria from "./pages/admin/AdminGaleria";
 import AdminNoticias from "./pages/admin/AdminNoticias";
 import AdminMensagens from "./pages/admin/AdminMensagens";
@@ -40,6 +41,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/projetos"
+            element={
+              <ProtectedRoute>
+                <AdminProjetos />
               </ProtectedRoute>
             }
           />

@@ -12,6 +12,7 @@ const authRoutes = require("./routes/authRoutes");
 const mensagensRoutes = require("./routes/mensagensRoutes");
 const noticiasRoutes = require("./routes/noticiasRoutes");
 const galeriaRoutes = require("./routes/galeriaRoutes");
+const projetosRoutes = require("./routes/projetosRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -36,6 +37,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/mensagens", mensagensRoutes);
 app.use("/api/noticias", noticiasRoutes);
 app.use("/api/galeria", galeriaRoutes);
+app.use("/api/projetos", projetosRoutes);
 
 // Tratamento de rota não encontrada e erros
 app.use(notFoundMiddleware);

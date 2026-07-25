@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Image, Newspaper, MessageSquare, Mail } from "lucide-react";
+import { Image, Newspaper, MessageSquare, Mail, FolderKanban } from "lucide-react";
 import AdminLayout from "./AdminLayout";
 import api from "../../api/api";
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState({ galeria: 0, noticias: 0, mensagens: 0, naoLidas: 0 });
+  const [stats, setStats] = useState({ projetos: 0, galeria: 0, noticias: 0, mensagens: 0, naoLidas: 0 });
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
     async function carregar() {
       try {
-        const [galeria, noticias, mensagens] = await Promise.all([
+        const [projetos, galeria, noticias, mensagens] = await Promise.all([
+          api.get("/projetos/admin/todos"),
           api.get("/galeria"),
           api.get("/noticias/admin/todas"),
           api.get("/mensagens")
         ]);
         setStats({
+          projetos: projetos.data.length,
           galeria: galeria.data.length,
           noticias: noticias.data.length,
           mensagens: mensagens.data.length,
@@ -31,10 +33,10 @@ export default function AdminDashboard() {
   }, []);
 
   const cards = [
+    { label: "Projetos cadastrados", valor: stats.projetos, icon: FolderKanban, cor: "bg-forest/10 text-forest" },
     { label: "Fotos na galeria", valor: stats.galeria, icon: Image, cor: "bg-forest/10 text-forest" },
     { label: "Notícias publicadas", valor: stats.noticias, icon: Newspaper, cor: "bg-marigold/20 text-marigold-dark" },
-    { label: "Mensagens recebidas", valor: stats.mensagens, icon: MessageSquare, cor: "bg-coral/10 text-coral" },
-    { label: "Mensagens não lidas", valor: stats.naoLidas, icon: Mail, cor: "bg-forest/10 text-forest" }
+    { label: "Mensagens não lidas", valor: stats.naoLidas, icon: Mail, cor: "bg-coral/10 text-coral" }
   ];
 
   return (
