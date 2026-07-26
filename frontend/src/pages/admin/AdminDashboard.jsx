@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Image, Newspaper, MessageSquare, Mail, FolderKanban } from "lucide-react";
+import { Image, Newspaper, Mail, FolderKanban, ShieldCheck } from "lucide-react";
 import AdminLayout from "./AdminLayout";
 import api from "../../api/api";
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState({ projetos: 0, galeria: 0, noticias: 0, mensagens: 0, naoLidas: 0 });
+  const [stats, setStats] = useState({ projetos: 0, certificados: 0, galeria: 0, noticias: 0, naoLidas: 0 });
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
     async function carregar() {
       try {
-        const [projetos, galeria, noticias, mensagens] = await Promise.all([
+        const [projetos, certificados, galeria, noticias, mensagens] = await Promise.all([
           api.get("/projetos/admin/todos"),
+          api.get("/certificados/admin/todos"),
           api.get("/galeria"),
           api.get("/noticias/admin/todas"),
           api.get("/mensagens")
         ]);
         setStats({
           projetos: projetos.data.length,
+          certificados: certificados.data.length,
           galeria: galeria.data.length,
           noticias: noticias.data.length,
-          mensagens: mensagens.data.length,
           naoLidas: mensagens.data.filter((m) => !m.lida).length
         });
       } catch (err) {
@@ -34,8 +35,8 @@ export default function AdminDashboard() {
 
   const cards = [
     { label: "Projetos cadastrados", valor: stats.projetos, icon: FolderKanban, cor: "bg-forest/10 text-forest" },
+    { label: "Certificados publicados", valor: stats.certificados, icon: ShieldCheck, cor: "bg-marigold/20 text-marigold-dark" },
     { label: "Fotos na galeria", valor: stats.galeria, icon: Image, cor: "bg-forest/10 text-forest" },
-    { label: "Notícias publicadas", valor: stats.noticias, icon: Newspaper, cor: "bg-marigold/20 text-marigold-dark" },
     { label: "Mensagens não lidas", valor: stats.naoLidas, icon: Mail, cor: "bg-coral/10 text-coral" }
   ];
 

@@ -49,6 +49,7 @@ export default function Footer() {
             <li><Link to="/projetos" className="hover:text-marigold transition-colors">Projetos sociais</Link></li>
             <li><Link to="/doacoes" className="hover:text-marigold transition-colors">Como doar</Link></li>
             <li><Link to="/contato" className="hover:text-marigold transition-colors">Fale conosco</Link></li>
+            <li><Link to="/certificados" className="hover:text-marigold transition-colors">Certificados</Link></li>
           </ul>
         </div>
 

@@ -57,6 +57,13 @@ INSERT INTO projetos (categoria, titulo, descricao, tag, imagem_url, ordem) VALU
 ('evento', 'Encontro de Famílias', 'Tarde de integração entre voluntários, famílias atendidas e parceiros da comunidade.', 'Semestral', 'https://placehold.co/700x500/C94530/FBF7EF?font=roboto&text=Encontro+de+Famílias', 2),
 ('evento', 'Confraternização de Fim de Ano', 'Celebração de encerramento das atividades do ano, com apresentações dos participantes dos projetos.', 'Anual', 'https://placehold.co/700x500/C94530/FBF7EF?font=roboto&text=Confraternização', 3);
 
+INSERT INTO certificados (titulo, descricao, categoria, arquivo_url, data_referencia, ordem) VALUES
+('Certificado de Regularidade Cadastral de Entidades (CRCE)', 'Certificado emitido pela Controladoria Geral do Estado de São Paulo, comprovando que a ONG Missão Vida está inscrita e aprovada no Cadastro Estadual de Entidades.', 'regularidade', 'certificados/crce-0653-2024.pdf', 'CRCE nº 0653/2024', 1),
+('Registro no Conselho Municipal dos Direitos da Criança e do Adolescente (CMDCA)', 'Certificado de registro da OSC junto ao CMDCA de Carapicuíba, reconhecendo o Projeto Acolhe - Serviço de Convivência e Fortalecimento de Vínculos.', 'registro', 'certificados/cmdca.pdf', 'Válido até 31/12/2025', 2),
+('Certificado de Licença do Corpo de Bombeiros (CLCB)', 'Certificado de licença expedido pelo Corpo de Bombeiros da Polícia Militar do Estado de São Paulo para a edificação da sede da ONG.', 'licenca', 'certificados/clcb-1395898-2025.pdf', 'CLCB nº 1395898 - Válido até 29/08/2028', 3),
+('Estatuto Social', 'Estatuto Social consolidado da ONG Missão Vida, com a redação vigente aprovada em Assembleia Geral.', 'estatutario', 'certificados/estatuto.pdf', 'Vigência desde 20/01/2023', 4),
+('Ata da Assembleia Geral Extraordinária', 'Ata da Assembleia Geral Extraordinária que aprovou a reforma estatutária, a alteração de CNAEs e a eleição da atual Diretoria e Conselho Fiscal.', 'estatutario', 'certificados/ata-da-assembleia.pdf', 'Realizada em 20/01/2023', 5);
+
 INSERT INTO mensagens (nome, email, telefone, assunto, mensagem, lida, criado_em) VALUES
 ('Fernanda Alves', 'fernanda.alves@example.com', '(11) 98888-1122', 'contato', 'Olá, gostaria de saber como posso ser voluntária nas oficinas esportivas aos finais de semana.', FALSE, NOW() - INTERVAL '2 days'),
 ('Ricardo Souza', 'ricardo.souza@example.com', '(11) 97777-3344', 'doacao', 'Bom dia! Represento uma pequena empresa local e gostaríamos de fazer uma doação mensal recorrente. Podem entrar em contato?', FALSE, NOW() - INTERVAL '1 days'),

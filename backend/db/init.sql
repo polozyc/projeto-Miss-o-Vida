@@ -61,7 +61,24 @@ CREATE TABLE IF NOT EXISTS projetos (
     atualizado_em TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+-- Tabela de certificados/documentos institucionais (CRCE, CMDCA, CLCB, Estatuto,
+-- Atas de Assembleia etc.), exibidos publicamente para dar transparência e
+-- credibilidade à ONG. Editável pelo painel admin.
+CREATE TABLE IF NOT EXISTS certificados (
+    id SERIAL PRIMARY KEY,
+    titulo VARCHAR(150) NOT NULL,
+    descricao TEXT,
+    categoria VARCHAR(50) NOT NULL DEFAULT 'documento', -- 'regularidade' | 'registro' | 'licenca' | 'estatutario'
+    arquivo_url VARCHAR(500) NOT NULL,
+    data_referencia VARCHAR(50), -- texto livre, ex: "Válido até 31/12/2025"
+    ordem INTEGER NOT NULL DEFAULT 0,
+    ativo BOOLEAN NOT NULL DEFAULT TRUE,
+    criado_em TIMESTAMP NOT NULL DEFAULT NOW(),
+    atualizado_em TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
 CREATE INDEX IF NOT EXISTS idx_mensagens_lida ON mensagens (lida);
 CREATE INDEX IF NOT EXISTS idx_noticias_publicado ON noticias (publicado);
 CREATE INDEX IF NOT EXISTS idx_projetos_categoria ON projetos (categoria);
 CREATE INDEX IF NOT EXISTS idx_projetos_ativo ON projetos (ativo);
+CREATE INDEX IF NOT EXISTS idx_certificados_ativo ON certificados (ativo);

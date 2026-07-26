@@ -10,11 +10,13 @@ import Sobre from "./pages/Sobre";
 import Projetos from "./pages/Projetos";
 import Doacoes from "./pages/Doacoes";
 import Contato from "./pages/Contato";
+import Certificados from "./pages/Certificados";
 import NaoEncontrada from "./pages/NaoEncontrada";
 
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProjetos from "./pages/admin/AdminProjetos";
+import AdminCertificados from "./pages/admin/AdminCertificados";
 import AdminGaleria from "./pages/admin/AdminGaleria";
 import AdminNoticias from "./pages/admin/AdminNoticias";
 import AdminMensagens from "./pages/admin/AdminMensagens";
@@ -34,6 +36,7 @@ export default function App() {
           <Route path="/projetos" element={<Projetos />} />
           <Route path="/doacoes" element={<Doacoes />} />
           <Route path="/contato" element={<Contato />} />
+          <Route path="/certificados" element={<Certificados />} />
 
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route
@@ -49,6 +52,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <AdminProjetos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/certificados"
+            element={
+              <ProtectedRoute>
+                <AdminCertificados />
               </ProtectedRoute>
             }
           />

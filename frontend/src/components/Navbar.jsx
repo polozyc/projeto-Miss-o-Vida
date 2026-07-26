@@ -7,7 +7,8 @@ const links = [
   { to: "/sobre", label: "Sobre" },
   { to: "/projetos", label: "Projetos" },
   { to: "/doacoes", label: "Doações" },
-  { to: "/contato", label: "Contato" }
+  { to: "/contato", label: "Contato" },
+  { to: "/certificados", label: "Certificados" }
 ];
 
 export default function Navbar() {
