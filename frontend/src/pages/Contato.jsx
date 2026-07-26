@@ -3,8 +3,10 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import WaveDivider from "../components/WaveDivider";
 import Button from "../components/Button";
 import api from "../api/api";
+import { useConfig } from "../context/ConfigContext";
 
 export default function Contato() {
+  const { config } = useConfig();
   const [form, setForm] = useState({ nome: "", email: "", telefone: "", mensagem: "" });
   const [enviando, setEnviando] = useState(false);
   const [status, setStatus] = useState(null);
@@ -55,7 +57,7 @@ export default function Contato() {
               </span>
               <div>
                 <h3 className="font-display font-semibold text-forest">Endereço</h3>
-                <p className="text-sm text-ink/70">Rua Albino de Moraes, 60 - Vila Caldas, Carapicuíba - SP</p>
+                <p className="text-sm text-ink/70">{config.endereco}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -64,7 +66,7 @@ export default function Contato() {
               </span>
               <div>
                 <h3 className="font-display font-semibold text-forest">Telefone</h3>
-                <p className="text-sm text-ink/70">(11) 4187-0000</p>
+                <p className="text-sm text-ink/70">{config.telefone}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -73,7 +75,7 @@ export default function Contato() {
               </span>
               <div>
                 <h3 className="font-display font-semibold text-forest">E-mail</h3>
-                <p className="text-sm text-ink/70">contato@missaovida.org.br</p>
+                <p className="text-sm text-ink/70">{config.email}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -82,7 +84,7 @@ export default function Contato() {
               </span>
               <div>
                 <h3 className="font-display font-semibold text-forest">Horário de atendimento</h3>
-                <p className="text-sm text-ink/70">Segunda a sexta, das 9h às 17h</p>
+                <p className="text-sm text-ink/70">{config.horario_atendimento}</p>
               </div>
             </div>
           </div>
@@ -91,7 +93,7 @@ export default function Contato() {
           <div className="rounded-3xl overflow-hidden shadow-sm ring-1 ring-forest/5 h-72">
             <iframe
               title="Mapa da sede da ONG Missão Vida"
-              src="https://www.google.com/maps?q=Rua+Albino+de+Moraes,+60,+Vila+Caldas,+Carapicu%C3%ADba+-+SP&output=embed"
+              src={`https://www.google.com/maps?q=${encodeURIComponent(config.endereco)}&output=embed`}
               width="100%"
               height="100%"
               style={{ border: 0 }}

@@ -57,6 +57,17 @@ INSERT INTO projetos (categoria, titulo, descricao, tag, imagem_url, ordem) VALU
 ('evento', 'Encontro de Famílias', 'Tarde de integração entre voluntários, famílias atendidas e parceiros da comunidade.', 'Semestral', 'https://placehold.co/700x500/C94530/FBF7EF?font=roboto&text=Encontro+de+Famílias', 2),
 ('evento', 'Confraternização de Fim de Ano', 'Celebração de encerramento das atividades do ano, com apresentações dos participantes dos projetos.', 'Anual', 'https://placehold.co/700x500/C94530/FBF7EF?font=roboto&text=Confraternização', 3);
 
+INSERT INTO configuracoes (chave, valor) VALUES
+('telefone', '(11) 4187-0000'),
+('email', 'contato@missaovida.org.br'),
+('endereco', 'Rua Albino de Moraes, 60 - Vila Caldas, Carapicuíba - SP'),
+('horario_atendimento', 'Segunda a sexta, das 9h às 17h'),
+('pix_chave', 'doacoes@missaovida.org.br'),
+('pix_tipo', 'email'),
+('pix_qrcode_url', ''),
+('instagram_url', 'https://instagram.com'),
+('facebook_url', 'https://facebook.com');
+
 INSERT INTO certificados (titulo, descricao, categoria, arquivo_url, data_referencia, ordem) VALUES
 ('Certificado de Regularidade Cadastral de Entidades (CRCE)', 'Certificado emitido pela Controladoria Geral do Estado de São Paulo, comprovando que a ONG Missão Vida está inscrita e aprovada no Cadastro Estadual de Entidades.', 'regularidade', 'certificados/crce-0653-2024.pdf', 'CRCE nº 0653/2024', 1),
 ('Registro no Conselho Municipal dos Direitos da Criança e do Adolescente (CMDCA)', 'Certificado de registro da OSC junto ao CMDCA de Carapicuíba, reconhecendo o Projeto Acolhe - Serviço de Convivência e Fortalecimento de Vínculos.', 'registro', 'certificados/cmdca.pdf', 'Válido até 31/12/2025', 2),

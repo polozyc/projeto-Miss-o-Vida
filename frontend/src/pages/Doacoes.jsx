@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import { Copy, Check, HeartHandshake, Landmark, Gift, Users } from "lucide-react";
+import { Copy, Check, HeartHandshake, Landmark, Gift, Users, QrCode } from "lucide-react";
 import WaveDivider from "../components/WaveDivider";
 import Button from "../components/Button";
 import api from "../api/api";
-
-const CHAVE_PIX = "doacoes@missaovida.org.br";
+import { useConfig } from "../context/ConfigContext";
 
 export default function Doacoes() {
+  const { config } = useConfig();
   const [copiado, setCopiado] = useState(false);
   const [form, setForm] = useState({ nome: "", email: "", telefone: "", mensagem: "" });
   const [enviando, setEnviando] = useState(false);
   const [status, setStatus] = useState(null); // 'sucesso' | 'erro' | null
 
   function copiarChave() {
-    navigator.clipboard.writeText(CHAVE_PIX).then(() => {
+    navigator.clipboard.writeText(config.pix_chave).then(() => {
       setCopiado(true);
       setTimeout(() => setCopiado(false), 2500);
     });
@@ -105,27 +105,52 @@ export default function Doacoes() {
           <h2 className="mt-3 font-display text-3xl font-semibold text-forest text-balance">
             Contribua agora mesmo
           </h2>
-          <p className="mt-4 text-ink/70">
-            Use a chave Pix abaixo para fazer sua doação diretamente à ONG Missão Vida.
-          </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-forest/10">
-            <code className="flex-1 truncate rounded-xl bg-forest/[0.05] px-4 py-3 text-forest font-medium text-sm sm:text-base">
-              {CHAVE_PIX}
-            </code>
-            <Button
-              type="button"
-              onClick={copiarChave}
-              variant={copiado ? "secondary" : "primary"}
-              className="w-full sm:w-auto"
-            >
-              {copiado ? <><Check size={18} /> Copiado!</> : <><Copy size={18} /> Copiar chave</>}
-            </Button>
-          </div>
-          <p className="mt-3 text-xs text-ink/50">
-            Chave Pix do tipo e-mail, em nome da Associação Missão Vida (dado fictício para
-            fins de demonstração).
-          </p>
+          {config.pix_chave ? (
+            <>
+              <p className="mt-4 text-ink/70">
+                Use a chave Pix abaixo, ou aponte a câmera do seu banco para o QR Code,
+                para fazer sua doação diretamente à ONG Missão Vida.
+              </p>
+
+              {config.pix_qrcode_url && (
+                <div className="mt-8 flex flex-col items-center gap-3">
+                  <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-forest/10">
+                    <img
+                      src={config.pix_qrcode_url}
+                      alt="QR Code para doação via Pix"
+                      className="h-52 w-52 object-contain"
+                    />
+                  </div>
+                  <p className="text-xs text-ink/50 flex items-center gap-1.5">
+                    <QrCode size={14} /> Escaneie com o app do seu banco
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-forest/10">
+                <code className="flex-1 truncate rounded-xl bg-forest/[0.05] px-4 py-3 text-forest font-medium text-sm sm:text-base">
+                  {config.pix_chave}
+                </code>
+                <Button
+                  type="button"
+                  onClick={copiarChave}
+                  variant={copiado ? "secondary" : "primary"}
+                  className="w-full sm:w-auto"
+                >
+                  {copiado ? <><Check size={18} /> Copiado!</> : <><Copy size={18} /> Copiar chave</>}
+                </Button>
+              </div>
+              <p className="mt-3 text-xs text-ink/50">
+                Chave Pix do tipo {config.pix_tipo || "e-mail"}, em nome da ONG Missão Vida.
+              </p>
+            </>
+          ) : (
+            <p className="mt-4 text-ink/60">
+              Estamos atualizando nossos dados de doação via Pix. Enquanto isso, use o
+              formulário abaixo para combinar sua contribuição diretamente conosco.
+            </p>
+          )}
         </div>
       </section>
 

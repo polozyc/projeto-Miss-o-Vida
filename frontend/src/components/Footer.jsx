@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { HeartHandshake, MapPin, Phone, Mail, Instagram, Facebook } from "lucide-react";
+import { useConfig } from "../context/ConfigContext";
 
 export default function Footer() {
   const ano = new Date().getFullYear();
+  const { config } = useConfig();
 
   return (
     <footer className="bg-forest-dark text-cream/90">
@@ -21,7 +23,7 @@ export default function Footer() {
           </p>
           <div className="flex gap-3 mt-5">
             <a
-              href="https://instagram.com"
+              href={config.instagram_url}
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram da Missão Vida"
@@ -30,7 +32,7 @@ export default function Footer() {
               <Instagram size={16} />
             </a>
             <a
-              href="https://facebook.com"
+              href={config.facebook_url}
               target="_blank"
               rel="noreferrer"
               aria-label="Facebook da Missão Vida"
@@ -58,15 +60,15 @@ export default function Footer() {
           <ul className="space-y-3 text-sm text-cream/70">
             <li className="flex items-start gap-2">
               <MapPin size={17} className="mt-0.5 shrink-0 text-marigold" />
-              <span>Rua Albino de Moraes, 60 - Vila Caldas, Carapicuíba - SP</span>
+              <span>{config.endereco}</span>
             </li>
             <li className="flex items-center gap-2">
               <Phone size={17} className="shrink-0 text-marigold" />
-              <span>(11) 4187-0000</span>
+              <span>{config.telefone}</span>
             </li>
             <li className="flex items-center gap-2">
               <Mail size={17} className="shrink-0 text-marigold" />
-              <span>contato@missaovida.org.br</span>
+              <span>{config.email}</span>
             </li>
           </ul>
         </div>

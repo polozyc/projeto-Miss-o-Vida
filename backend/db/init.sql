@@ -82,3 +82,11 @@ CREATE INDEX IF NOT EXISTS idx_noticias_publicado ON noticias (publicado);
 CREATE INDEX IF NOT EXISTS idx_projetos_categoria ON projetos (categoria);
 CREATE INDEX IF NOT EXISTS idx_projetos_ativo ON projetos (ativo);
 CREATE INDEX IF NOT EXISTS idx_certificados_ativo ON certificados (ativo);
+
+-- Tabela de configurações gerais do site (chave/valor), editável pelo painel
+-- admin: dados de contato, endereço, chave Pix, QR Code de doação, redes sociais.
+CREATE TABLE IF NOT EXISTS configuracoes (
+    chave VARCHAR(60) PRIMARY KEY,
+    valor TEXT,
+    atualizado_em TIMESTAMP NOT NULL DEFAULT NOW()
+);

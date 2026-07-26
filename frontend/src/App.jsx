@@ -17,6 +17,7 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProjetos from "./pages/admin/AdminProjetos";
 import AdminCertificados from "./pages/admin/AdminCertificados";
+import AdminConfiguracoes from "./pages/admin/AdminConfiguracoes";
 import AdminGaleria from "./pages/admin/AdminGaleria";
 import AdminNoticias from "./pages/admin/AdminNoticias";
 import AdminMensagens from "./pages/admin/AdminMensagens";
@@ -60,6 +61,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <AdminCertificados />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/configuracoes"
+            element={
+              <ProtectedRoute>
+                <AdminConfiguracoes />
               </ProtectedRoute>
             }
           />

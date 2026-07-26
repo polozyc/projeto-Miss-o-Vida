@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { ConfigProvider } from "./context/ConfigContext.jsx";
 import "./index.css";
 
 // Em produção no GitHub Pages, o site fica publicado numa subpasta
@@ -15,9 +16,11 @@ const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter basename={basename}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <ConfigProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </ConfigProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

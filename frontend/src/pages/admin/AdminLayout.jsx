@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard, Image, Newspaper, MessageSquare, LogOut, HeartHandshake, FolderKanban, ShieldCheck
+  LayoutDashboard, Image, Newspaper, MessageSquare, LogOut, HeartHandshake, FolderKanban, ShieldCheck, Settings
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
@@ -11,7 +11,8 @@ const links = [
   { to: "/admin/certificados", label: "Certificados", icon: ShieldCheck },
   { to: "/admin/galeria", label: "Galeria", icon: Image },
   { to: "/admin/noticias", label: "Notícias", icon: Newspaper },
-  { to: "/admin/mensagens", label: "Mensagens", icon: MessageSquare }
+  { to: "/admin/mensagens", label: "Mensagens", icon: MessageSquare },
+  { to: "/admin/configuracoes", label: "Configurações", icon: Settings }
 ];
 
 export default function AdminLayout({ children }) {
