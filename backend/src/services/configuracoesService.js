@@ -10,7 +10,10 @@ const CHAVES_PERMITIDAS = [
   "pix_tipo",
   "pix_qrcode_url",
   "instagram_url",
-  "facebook_url"
+  "facebook_url",
+  "impacto_pessoas",
+  "impacto_cestas",
+  "impacto_criancas"
 ];
 
 async function buscarTodas() {

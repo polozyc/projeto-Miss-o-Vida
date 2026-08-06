@@ -4,13 +4,19 @@ import React, { useEffect, useRef, useState } from "react";
  * Contador animado que sobe até o valor alvo quando entra na tela.
  * O anel de "ripple" ao redor do ícone é o elemento de assinatura visual
  * da seção de impacto, remetendo à ideia de uma ação se espalhando pela comunidade.
+ *
+ * Aceita tanto um número (`valor`, anima contando) quanto um texto livre
+ * (`valorTexto`, ex: "5MIL") — usado quando o formato não é um número puro.
  */
-export default function ImpactCounter({ icon: Icon, valor, label, sufixo = "+" }) {
+export default function ImpactCounter({ icon: Icon, valor, valorTexto, label, sufixo = "+" }) {
   const [contagem, setContagem] = useState(0);
   const ref = useRef(null);
   const jaAnimou = useRef(false);
+  const usaTexto = valorTexto != null && valorTexto !== "";
 
   useEffect(() => {
+    if (usaTexto) return; // texto livre não anima
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !jaAnimou.current) {
@@ -32,7 +38,7 @@ export default function ImpactCounter({ icon: Icon, valor, label, sufixo = "+" }
 
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [valor]);
+  }, [valor, usaTexto]);
 
   return (
     <div ref={ref} className="flex flex-col items-center text-center gap-3">
@@ -43,8 +49,8 @@ export default function ImpactCounter({ icon: Icon, valor, label, sufixo = "+" }
         </span>
       </div>
       <p className="font-display text-4xl md:text-5xl font-semibold text-forest">
-        {contagem.toLocaleString("pt-BR")}
-        <span className="text-marigold">{sufixo}</span>
+        {usaTexto ? valorTexto : contagem.toLocaleString("pt-BR")}
+        {!usaTexto && <span className="text-marigold">{sufixo}</span>}
       </p>
       <p className="text-ink/70 font-medium max-w-[14ch]">{label}</p>
     </div>

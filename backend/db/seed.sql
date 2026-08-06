@@ -66,7 +66,10 @@ INSERT INTO configuracoes (chave, valor) VALUES
 ('pix_tipo', 'email'),
 ('pix_qrcode_url', ''),
 ('instagram_url', 'https://instagram.com'),
-('facebook_url', 'https://facebook.com');
+('facebook_url', 'https://facebook.com'),
+('impacto_pessoas', '5MIL'),
+('impacto_cestas', '1200MIL'),
+('impacto_criancas', '200');
 
 INSERT INTO certificados (titulo, descricao, categoria, arquivo_url, data_referencia, ordem) VALUES
 ('Certificado de Regularidade Cadastral de Entidades (CRCE)', 'Certificado emitido pela Controladoria Geral do Estado de São Paulo, comprovando que a ONG Missão Vida está inscrita e aprovada no Cadastro Estadual de Entidades.', 'regularidade', 'certificados/crce-0653-2024.pdf', 'CRCE nº 0653/2024', 1),

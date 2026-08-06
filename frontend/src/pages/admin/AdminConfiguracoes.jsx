@@ -183,6 +183,40 @@ export default function AdminConfiguracoes() {
           </div>
         </div>
 
+        {/* Números de Impacto */}
+        <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest/5 grid gap-4">
+          <h2 className="font-display text-lg font-semibold text-forest">Números de Impacto (Home)</h2>
+          <p className="text-xs text-ink/50 -mt-2">
+            Aceita texto livre, não só números — ex: "5MIL", "1200MIL", "200+".
+          </p>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-ink/80 mb-1.5">Pessoas atendidas</label>
+              <input
+                name="impacto_pessoas" value={form.impacto_pessoas} onChange={atualizarCampo}
+                className="w-full rounded-xl border border-forest/15 px-4 py-3 outline-none focus:border-forest"
+                placeholder="5MIL"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-ink/80 mb-1.5">Cestas básicas distribuídas</label>
+              <input
+                name="impacto_cestas" value={form.impacto_cestas} onChange={atualizarCampo}
+                className="w-full rounded-xl border border-forest/15 px-4 py-3 outline-none focus:border-forest"
+                placeholder="1200MIL"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-ink/80 mb-1.5">Crianças em projetos esportivos</label>
+              <input
+                name="impacto_criancas" value={form.impacto_criancas} onChange={atualizarCampo}
+                className="w-full rounded-xl border border-forest/15 px-4 py-3 outline-none focus:border-forest"
+                placeholder="200"
+              />
+            </div>
+          </div>
+        </div>
+
         {erro && <p className="text-sm font-medium text-coral-dark">{erro}</p>}
         {sucesso && <p className="text-sm font-medium text-forest">Configurações salvas com sucesso!</p>}
 

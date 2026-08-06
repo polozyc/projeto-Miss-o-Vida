@@ -12,7 +12,10 @@ const PADRAO = {
   pix_tipo: "email",
   pix_qrcode_url: "",
   instagram_url: "https://instagram.com",
-  facebook_url: "https://facebook.com"
+  facebook_url: "https://facebook.com",
+  impacto_pessoas: "5MIL",
+  impacto_cestas: "1200MIL",
+  impacto_criancas: "200"
 };
 
 const ConfigContext = createContext(null);

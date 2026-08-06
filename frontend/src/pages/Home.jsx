@@ -2,13 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   HeartHandshake, Users, Trophy, Sparkles, ArrowRight,
-  GraduationCap, HandHeart, CalendarHeart
+  GraduationCap, HandHeart, CalendarHeart, Award, Package
 } from "lucide-react";
 import Button from "../components/Button";
 import ImpactCounter from "../components/ImpactCounter";
 import ProjectCard from "../components/ProjectCard";
 import WaveDivider from "../components/WaveDivider";
 import api from "../api/api";
+import { useConfig } from "../context/ConfigContext";
+
+// ONG fundada em 14/10/2013 (conforme Estatuto Social) — calcula "há quantos
+// anos" automaticamente, sem precisar atualizar esse número todo ano.
+const FUNDACAO = new Date("2013-10-14");
+function calcularAnosAtuacao() {
+  const diffMs = Date.now() - FUNDACAO.getTime();
+  return Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365.25));
+}
 
 const ICONE_POR_CATEGORIA = {
   esporte: { icon: Trophy, tag: "Esporte" },
@@ -18,10 +27,12 @@ const ICONE_POR_CATEGORIA = {
 };
 
 export default function Home() {
+  const { config } = useConfig();
   const [galeria, setGaleria] = useState([]);
   const [noticias, setNoticias] = useState([]);
   const [projetos, setProjetos] = useState([]);
   const [erroApi, setErroApi] = useState(false);
+  const anosAtuacao = calcularAnosAtuacao();
 
   useEffect(() => {
     api.get("/galeria").then((res) => setGaleria(res.data.slice(0, 8))).catch(() => setErroApi(true));
@@ -156,9 +167,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Números / Impacto */}
+      {/* Selos de credibilidade + Números / Impacto */}
       <section className="max-w-7xl mx-auto px-5 md:px-8 py-16 md:py-24">
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-10">
           <span className="text-sm font-semibold uppercase tracking-widest text-coral">
             Nosso impacto
           </span>
@@ -166,10 +177,35 @@ export default function Home() {
             Cada número representa uma vida transformada
           </h2>
         </div>
+
+        {/* Selos */}
+        <div className="flex flex-col sm:flex-row justify-center gap-6 sm:gap-12 mb-14">
+          <div className="flex items-center gap-3 justify-center">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink/5 text-ink/60">
+              <Award size={20} />
+            </span>
+            <span className="font-medium text-forest">Reconhecimento da comunidade</span>
+          </div>
+          <div className="flex items-center gap-3 justify-center">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-marigold/20 text-marigold-dark">
+              <Users size={20} />
+            </span>
+            <span className="font-medium text-forest">
+              Atuamos há mais de {anosAtuacao} anos impactando vidas
+            </span>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
-          <ImpactCounter icon={Users} valor={2400} label="pessoas atendidas" />
-          <ImpactCounter icon={Trophy} valor={38} label="projetos realizados" />
-          <ImpactCounter icon={HeartHandshake} valor={150} label="voluntários ativos" />
+          <ImpactCounter icon={Users} valorTexto={config.impacto_pessoas} label="pessoas atendidas diretamente" />
+          <ImpactCounter icon={Package} valorTexto={config.impacto_cestas} label="cestas básicas distribuídas" />
+          <ImpactCounter icon={Trophy} valorTexto={config.impacto_criancas} label="crianças e adolescentes em projetos esportivos" />
+        </div>
+
+        <div className="text-center mt-14">
+          <Button to="/doacoes" variant="primary">
+            Seja voluntário <HeartHandshake size={18} />
+          </Button>
         </div>
       </section>
 
