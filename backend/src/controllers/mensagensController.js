@@ -1,14 +1,49 @@
 const mensagensService = require("../services/mensagensService");
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Os limites de nome/email/telefone/assunto espelham as colunas VARCHAR
+// da tabela `mensagens` (backend/db/init.sql), para rejeitar cedo (400) em
+// vez de estourar erro de banco (500) em payloads grandes demais.
+const LIMITES = { nome: 150, email: 150, telefone: 30, assunto: 50, mensagem: 3000 };
+
+function validarCampo(valor, campo, obrigatorio) {
+  if (!valor) {
+    if (obrigatorio) return `Campo "${campo}" é obrigatório.`;
+    return null;
+  }
+  if (typeof valor !== "string") return `Campo "${campo}" inválido.`;
+  if (valor.trim().length === 0 && obrigatorio) return `Campo "${campo}" é obrigatório.`;
+  if (valor.length > LIMITES[campo]) return `Campo "${campo}" excede o tamanho máximo.`;
+  return null;
+}
+
 async function criar(req, res, next) {
   try {
-    const { nome, email, telefone, assunto, mensagem } = req.body;
+    const { nome, email, telefone, assunto, mensagem } = req.body || {};
 
-    if (!nome || !email || !mensagem) {
-      return res.status(400).json({ erro: "Nome, e-mail e mensagem são obrigatórios." });
+    const erros = [
+      validarCampo(nome, "nome", true),
+      validarCampo(email, "email", true),
+      validarCampo(telefone, "telefone", false),
+      validarCampo(assunto, "assunto", false),
+      validarCampo(mensagem, "mensagem", true)
+    ].filter(Boolean);
+
+    if (erros.length > 0) {
+      return res.status(400).json({ erro: erros[0] });
     }
 
-    const nova = await mensagensService.criar({ nome, email, telefone, assunto, mensagem });
+    if (!EMAIL_REGEX.test(email.trim())) {
+      return res.status(400).json({ erro: "Informe um e-mail válido." });
+    }
+
+    const nova = await mensagensService.criar({
+      nome: nome.trim(),
+      email: email.trim().toLowerCase(),
+      telefone: telefone ? telefone.trim() : null,
+      assunto: assunto ? assunto.trim() : null,
+      mensagem: mensagem.trim()
+    });
     res.status(201).json(nova);
   } catch (err) {
     next(err);

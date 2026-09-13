@@ -250,6 +250,19 @@ Railway ou Fly.io).
   SPA para GitHub Pages, permitindo que rotas como `/sobre` ou `/contato` funcionem
   mesmo ao recarregar a página diretamente (o GitHub Pages não suporta rewrites de
   servidor como o Nginx faz no Docker).
+- **Sobre headers de segurança:** o GitHub Pages não permite configurar headers HTTP
+  customizados — os headers definidos em `frontend/nginx.conf` e no `Caddyfile`
+  (CSP, HSTS, X-Frame-Options etc.) só valem para o deploy via Docker/VPS, **não**
+  para o GitHub Pages. Por isso o `index.html` traz uma tag `<meta
+  http-equiv="Content-Security-Policy">` equivalente (a única forma de CSP possível
+  nessa hospedagem), que já é preenchida automaticamente com o valor de
+  `VITE_API_URL` no build. HSTS e X-Frame-Options não têm equivalente via `<meta>` —
+  isso é uma limitação inerente ao GitHub Pages, não do projeto.
+- **Repositório precisa ser público** para usar o GitHub Pages gratuito (conta
+  Free do GitHub só publica Pages de repositórios públicos). O projeto foi revisado
+  e não tem segredos versionados: `.env` fica de fora do Git (veja `.gitignore`) e
+  todas as credenciais (JWT, senha do admin, banco) só existem como variáveis de
+  ambiente fora do repositório.
 
 ### E o backend, quando eu quiser publicar de verdade?
 Quando estiver pronto, use o `docker-compose.prod.yml` já incluído neste projeto (veja a
@@ -300,6 +313,7 @@ gastar nada: frontend no GitHub Pages, backend no Render e banco de dados no Neo
 
    | Nome | Valor |
    |---|---|
+   | `NODE_ENV` | `production` |
    | `DATABASE_URL` | a connection string copiada do Neon |
    | `JWT_SECRET` | um valor aleatório forte (gere com `openssl rand -base64 48`) |
    | `CORS_ORIGIN` | `https://SEU-USUARIO.github.io` (URL do GitHub Pages, sem barra no final) |
@@ -307,6 +321,9 @@ gastar nada: frontend no GitHub Pages, backend no Render e banco de dados no Neo
    | `ADMIN_DEFAULT_PASSWORD` | uma senha forte à sua escolha |
 
    > Não é preciso definir `PORT` — o Render define isso automaticamente.
+   > `NODE_ENV=production` ativa uma checagem no backend que **recusa subir**
+   > se `JWT_SECRET`, `ADMIN_DEFAULT_PASSWORD` ou `CORS_ORIGIN` ficarem com
+   > valor fraco/de exemplo — sem essa variável, essa proteção fica desativada.
 
 6. Clique em **"Create Web Service"**. O Render vai buildar e subir o backend.
 7. Quando terminar, copie a URL gerada (algo como
@@ -417,13 +434,19 @@ docker-compose -f docker-compose.prod.yml up -d --build
 Isso rebuilda apenas o que mudou, sem derrubar o volume do banco de dados.
 
 ### Checklist de segurança antes de ir ao ar
-- [ ] `JWT_SECRET` trocado para um valor aleatório forte (não o do exemplo)
+- [ ] `JWT_SECRET` trocado para um valor aleatório forte (não o do exemplo, mín. 32 caracteres)
 - [ ] Senha do banco trocada
 - [ ] Senha do administrador padrão trocada (ou alterada após o 1º login)
 - [ ] Porta 5432 (Postgres) **não** exposta publicamente (o `docker-compose.prod.yml` já garante isso)
 - [ ] Firewall do servidor liberando apenas as portas 22 (SSH), 80 e 443
 - [ ] Backup automático do banco configurado
 - [ ] `CORS_ORIGIN`/`SITE_URL` apontando exatamente para o domínio real (com `https://`)
+- [ ] `NODE_ENV=production` definido no backend — o servidor **recusa subir** se `JWT_SECRET`, `ADMIN_DEFAULT_PASSWORD` ou `CORS_ORIGIN` ainda estiverem com valores de exemplo (ver `validarSegredosDeProducao` em `backend/src/server.js`)
+- [ ] `api.seudominio.org.br` no `connect-src` do `frontend/nginx.conf` atualizado para o domínio real da API
+- [ ] Após o 1º deploy, troque a senha do admin pelo painel e confirme que a chave Pix em **Configurações** é a correta — é o dado mais sensível do site, pois controla para onde as doações são direcionadas
+- [ ] Revisar periodicamente os logs de tentativas de login (rate limit de 10 tentativas / 15 min por IP já ativo em `/api/auth/login`)
+
+> Proteções já implementadas no código: rate limiting (login, formulário de doação e geral da API), `helmet` (headers HTTP de segurança), CORS restrito por allowlist, limite de tamanho de payload, validação de campos no formulário público, checagem de mimetype nos uploads de imagem, e headers de segurança (CSP, HSTS, X-Frame-Options) no Nginx/Caddy.
 
 ---
 

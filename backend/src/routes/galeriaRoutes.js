@@ -14,13 +14,19 @@ const storage = multer.diskStorage({
   }
 });
 
+const MIME_PERMITIDOS = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
+
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  limits: { fileSize: 5 * 1024 * 1024, files: 1 }, // 5MB, 1 arquivo por vez
   fileFilter: (req, file, cb) => {
+    // Checa extensão E mimetype declarado — reduz o risco de um arquivo
+    // disfarçado (ex: .html renomeado para .jpg) ser aceito e servido
+    // estaticamente a partir de /uploads.
     const tiposPermitidos = /jpeg|jpg|png|webp|gif/;
     const extValida = tiposPermitidos.test(path.extname(file.originalname).toLowerCase());
-    if (extValida) return cb(null, true);
+    const mimeValido = MIME_PERMITIDOS.has(file.mimetype);
+    if (extValida && mimeValido) return cb(null, true);
     cb(new Error("Formato de imagem não suportado."));
   }
 });

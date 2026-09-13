@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <title>Missão Vida</title>
+    <!-- Este arquivo é copiado sem processamento pelo Vite (fica em public/),
+         então não dá pra usar %VITE_API_URL% aqui como no index.html — mas
+         esta página só redireciona, nunca chama a API, então não precisa. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'" />
     <script type="text/javascript">
       // Truque para permitir client-side routing (React Router) no GitHub Pages,
       // que não suporta rewrites de servidor. Baseado em:

@@ -5,8 +5,17 @@
 
 seudominio.org.br {
     reverse_proxy frontend:80
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    }
 }
 
 api.seudominio.org.br {
     reverse_proxy backend:4000
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+    }
 }

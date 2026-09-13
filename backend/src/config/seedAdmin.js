@@ -8,7 +8,7 @@ const pool = require("./database");
  */
 async function seedAdmin() {
   const nome = process.env.ADMIN_DEFAULT_NAME || "Administrador Missão Vida";
-  const email = process.env.ADMIN_DEFAULT_EMAIL || "admin@missaovida.org.br";
+  const email = (process.env.ADMIN_DEFAULT_EMAIL || "admin@missaovida.org.br").trim().toLowerCase();
   const senha = process.env.ADMIN_DEFAULT_PASSWORD || "missaovida2026";
 
   try {

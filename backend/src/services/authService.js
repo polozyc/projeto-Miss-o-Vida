@@ -29,7 +29,7 @@ async function autenticar(email, senha) {
   const token = jwt.sign(
     { id: admin.id, nome: admin.nome, email: admin.email },
     process.env.JWT_SECRET,
-    { expiresIn: "8h" }
+    { expiresIn: "8h", algorithm: "HS256" }
   );
 
   return {
