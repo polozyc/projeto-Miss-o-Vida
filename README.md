@@ -27,7 +27,6 @@ missao-vida/
 ├── backend/
 │   ├── Dockerfile
 │   ├── package.json
-│   ├── .env.example
 │   ├── db/
 │   │   ├── init.sql          # criação das tabelas
 │   │   └── seed.sql          # dados de exemplo (notícias, galeria, mensagens)
@@ -42,7 +41,6 @@ missao-vida/
     ├── Dockerfile
     ├── nginx.conf
     ├── package.json
-    ├── .env.example
     └── src/
         ├── main.jsx / App.jsx
         ├── api/               # cliente axios
@@ -67,11 +65,8 @@ missao-vida/
    cd missao-vida
    ```
 
-2. (Opcional) Copie os arquivos de variáveis de ambiente de exemplo, caso queira customizar algo:
-   ```bash
-   cp backend/.env.example backend/.env
-   cp frontend/.env.example frontend/.env
-   ```
+2. (Opcional) Para customizar alguma variável, crie `backend/.env` e/ou `frontend/.env` com
+   base na tabela da seção **Variáveis de ambiente**, mais abaixo.
    > O `docker-compose.yml` já possui valores padrão funcionais, então esse passo é opcional para rodar localmente.
 
 3. Suba todos os serviços (banco de dados, backend e frontend):
@@ -118,19 +113,21 @@ psql -d missaovida_db -f backend/db/seed.sql
 ### 2. Backend
 ```bash
 cd backend
-cp .env.example .env      # ajuste as variáveis conforme seu ambiente
 npm install
 npm run dev                # inicia com nodemon em modo desenvolvimento
 ```
+Crie um arquivo `backend/.env` com as variáveis da tabela abaixo (ou rode assim mesmo — os
+valores padrão já servem pra um Postgres local com as credenciais do `docker-compose.yml`).
 A API sobe em `http://localhost:4000`.
 
 ### 3. Frontend
 ```bash
 cd frontend
-cp .env.example .env       # ajuste VITE_API_URL se necessário
 npm install
 npm run dev
 ```
+Crie um arquivo `frontend/.env` com `VITE_API_URL` se a API não estiver em
+`http://localhost:4000/api` (veja a tabela abaixo).
 O site sobe em `http://localhost:5173`.
 
 ---
@@ -390,15 +387,19 @@ Registre um domínio (ou subdomínio) e crie dois registros DNS tipo **A** apont
 - `api.seudominio.org.br` → IP do servidor (API)
 
 ### 3. Configurar variáveis de ambiente
+Crie um arquivo `.env` na raiz do projeto (fica de fora do Git — veja `.gitignore`) com:
 ```bash
-cp .env.prod.example .env
+POSTGRES_USER=missaovida_prod
+POSTGRES_PASSWORD=            # gere com: openssl rand -base64 24
+POSTGRES_DB=missaovida_db
+JWT_SECRET=                   # gere com: openssl rand -base64 48
+SITE_URL=https://seudominio.org.br
+API_URL=https://api.seudominio.org.br/api
+ADMIN_DEFAULT_NAME=Administrador Missão Vida
+ADMIN_DEFAULT_EMAIL=admin@seudominio.org.br
+ADMIN_DEFAULT_PASSWORD=       # gere com: openssl rand -base64 18
 ```
-Edite o `.env` e preencha com valores reais e fortes:
-```bash
-# Gerar um segredo JWT forte
-openssl rand -base64 48
-```
-Preencha `POSTGRES_PASSWORD`, `JWT_SECRET`, `ADMIN_DEFAULT_PASSWORD`, e os domínios em `SITE_URL`/`API_URL`.
+`docker-compose.prod.yml` lê essas variáveis automaticamente do `.env` na raiz.
 
 ### 4. Configurar o Caddyfile
 Edite `Caddyfile` e troque `seudominio.org.br` / `api.seudominio.org.br` pelos seus domínios reais.
