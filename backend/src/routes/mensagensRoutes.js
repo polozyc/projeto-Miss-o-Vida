@@ -3,6 +3,7 @@ const rateLimit = require("express-rate-limit");
 const router = express.Router();
 const mensagensController = require("../controllers/mensagensController");
 const authMiddleware = require("../middleware/authMiddleware");
+const obterIpCliente = require("../utils/obterIpCliente");
 
 // Limita envios do formulário público — mitiga spam/flood no painel de mensagens
 const criarLimiter = rateLimit({
@@ -10,6 +11,7 @@ const criarLimiter = rateLimit({
   limit: 8,
   standardHeaders: true,
   legacyHeaders: false,
+  keyGenerator: obterIpCliente,
   message: { erro: "Muitas mensagens enviadas. Tente novamente em alguns minutos." }
 });
 

@@ -8,6 +8,7 @@ const fs = require("fs");
 
 const pool = require("./config/database");
 const seedAdmin = require("./config/seedAdmin");
+const obterIpCliente = require("./utils/obterIpCliente");
 const { errorMiddleware, notFoundMiddleware } = require("./middleware/errorMiddleware");
 
 const authRoutes = require("./routes/authRoutes");
@@ -104,7 +105,8 @@ const limiteGeral = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 300,
   standardHeaders: true,
-  legacyHeaders: false
+  legacyHeaders: false,
+  keyGenerator: obterIpCliente
 });
 app.use("/api", limiteGeral);
 
