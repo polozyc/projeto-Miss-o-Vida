@@ -9,8 +9,9 @@
     <!-- Content-Security-Policy via <meta>: no GitHub Pages não dá pra definir
          headers HTTP customizados (X-Frame-Options, HSTS, etc. ficam de fora),
          então isso é a única camada de CSP possível nessa hospedagem.
-         %VITE_API_URL% é substituído pelo Vite no build com o valor da env var. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' %VITE_API_URL%; object-src 'none'; base-uri 'self'; form-action 'self'" />
+         %VITE_API_ORIGIN% é substituído pelo Vite no build (só esquema+host,
+         sem o "/api" — connect-src com path bloquearia "/api/certificados" etc). -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' %VITE_API_ORIGIN%; object-src 'none'; base-uri 'self'; form-action 'self'" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />

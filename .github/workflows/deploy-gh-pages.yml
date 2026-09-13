@@ -46,7 +46,12 @@ jobs:
           # Enquanto o backend não estiver hospedado, o site funciona só
           # como "vitrine": formulários e painel admin não vão responder.
           VITE_API_URL: ${{ vars.VITE_API_URL || 'http://localhost:4000/api' }}
-        run: npm run build
+        run: |
+          # O Content-Security-Policy (connect-src) do index.html precisa só da
+          # origem (esquema+host), sem o path "/api" — um CSP com path restringe
+          # a requisição àquele path EXATO, bloqueando "/api/certificados" etc.
+          export VITE_API_ORIGIN=$(node -e "console.log(new URL(process.env.VITE_API_URL).origin)")
+          npm run build
 
       - name: Preparar artefato do GitHub Pages
         uses: actions/upload-pages-artifact@v3
